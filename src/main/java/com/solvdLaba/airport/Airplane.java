@@ -14,8 +14,6 @@ public class Airplane {
         pilot = plt;
     }
 
-
-
     public  String getType()
     {
         return type;

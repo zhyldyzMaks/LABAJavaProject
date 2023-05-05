@@ -1,11 +1,13 @@
 package com.solvdLaba.airport;
 
+import com.solvdLaba.exceptions.InvalidBoardingPassException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Boarding implements BoardingGate{
     private boolean gateOpen;
-    private List<Passenger> passengersOnBoard;
+    private static List<Passenger> passengersOnBoard;
 
     public Boarding() {
         gateOpen = false;
@@ -24,7 +26,7 @@ public class Boarding implements BoardingGate{
     public boolean isGateOpen() {
         return gateOpen;
     }
-    public void boardPassengers(List<Passenger> passengers) {
+    public void boardPassengers(List<Passenger> passengers) throws InvalidBoardingPassException {
         if (!this.gateOpen) {
             System.out.println("Boarding gate is closed. Cannot board passengers.");
             return;
@@ -47,5 +49,9 @@ public class Boarding implements BoardingGate{
 
     public String getName(Passenger name) {
         return getName(name);
+    }
+
+    public String toString(){
+        return getPassengersOnBoard().toString();
     }
 }

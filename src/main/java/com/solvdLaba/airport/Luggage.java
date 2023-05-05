@@ -1,8 +1,8 @@
 package com.solvdLaba.airport;
 
 public class Luggage {
-    private int weight; // in kilograms
-    private String type; // carry-on or checked-in
+    private int weight;
+    private String type;
 
     public Luggage(int weight, String type) {
         this.weight = weight;
@@ -28,12 +28,5 @@ public class Luggage {
     public String toString(){
         return "Baggage Details: \n Weight: "+weight+" kg"+"\n Type: "+type;
     }
-    //  public void printDetails() {
-//        System.out.println("Baggage details:");
-//        System.out.println("  Weight: " + weight + " kg");
-//        System.out.println("  Type: " + type);
-//        System.out.println("  Owner: " + owner);
-//    }
-
 
 }

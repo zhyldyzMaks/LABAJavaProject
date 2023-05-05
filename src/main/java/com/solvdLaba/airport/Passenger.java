@@ -1,16 +1,14 @@
 package com.solvdLaba.airport;
 
-import com.solvdLaba.utils.MyLogger;
-
-import java.util.Map;
+import com.solvdLaba.exceptions.InvalidAgeException;
+import com.solvdLaba.exceptions.InvalidBoardingPassException;
 
 public class Passenger implements Security{
     private String name;
     private int age;
     private Luggage luggage;
     private boolean isTSAChecked;
-
-    private Map<String, Integer> passengers;
+    private Boarding boardingPass;
 
     public Luggage getLuggage() {
         return luggage;
@@ -20,15 +18,20 @@ public class Passenger implements Security{
         this.name = name;
     }
 
-    public void setAge(int age) {
+    public void setAge(int age) throws InvalidAgeException {
         this.age = age;
+        if (age < 0){
+            throw new InvalidAgeException("Age cannot be less than zero", new IllegalArgumentException() {
+            });
+        }
+
     }
 
     public void setLuggage(Luggage luggage) {
         this.luggage = luggage;
     }
 
-    private Boarding boardingPass;
+
     public Passenger(String name, int age){
         this.name = name;
         this.age = age;
@@ -63,14 +66,15 @@ public class Passenger implements Security{
         return isTSAChecked;
     }
 
-    protected boolean hasValidBoardingPass(Passenger p1){
-        if (p1.getBoardingPass()==null){
-            return false;
-        }if (!p1.getName().equals(p1.getBoardingPass().getName(p1))) {
-            return false;
-        }return true;
+protected boolean hasValidBoardingPass(Passenger p1) throws InvalidBoardingPassException {
+    if (p1.getBoardingPass() == null) {
+        throw new InvalidBoardingPassException("Boarding pass is missing");
     }
-
+    if (!p1.getName().equals(p1.getBoardingPass().getName(p1))) {
+        throw new InvalidBoardingPassException("Boarding pass name does not match passenger name");
+    }
+    return true;
+}
     @Override
     public void skipSecurityCheckLine(boolean checked){
         if (checked){
@@ -79,4 +83,12 @@ public class Passenger implements Security{
             this.isTSAChecked = false;
         }
     }
+
+    //    protected boolean hasValidBoardingPass(Passenger p1){
+//        if (p1.getBoardingPass()==null){
+//            return false;
+//        }if (!p1.getName().equals(p1.getBoardingPass().getName(p1))) {
+//            return false;
+//        }return true;
+//    }
 }

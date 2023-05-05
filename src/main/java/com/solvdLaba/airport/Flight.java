@@ -90,22 +90,12 @@ public class Flight {
         return availableSeats;
     }
 
-//    public void displayDetails() {
-//        System.out.println("Flight Number: " + flightNumber);
-//        System.out.print("Departure: ");
-//        departureAirport.displayDetails();
-//        System.out.print("Arrival: ");
-//        arrivalAirport.displayDetails();
-//        System.out.println("Number of Seats: " + numberOfSeats);
-//        System.out.println("Available Seats: " + availableSeats);
-//        //log.info("Flight Number: " + flightNumber);
-//    }
-
 
     @Override
     public String toString(){
-        return "Flight Information\nFlight number: "+flightNumber+"\nDeparture from: "+getDepartureAirport() + "\nArrive to : "+getArrivalAirport()
-                +"\nNumber of seats "+ numberOfSeats+" seats" +"\nAvailable seats are : "+availableSeats + " \nDate: " + date + "\nDuration: " + duration;
+        return "Flight Information\nFlight number: "+flightNumber+"\nDeparture from: "+getDepartureAirport()
+                + "\nArrive to : "+getArrivalAirport() +"\nNumber of seats "+ numberOfSeats+" seats"
+                +"\nAvailable seats are : "+availableSeats + " \nDate: " + date + "\nDuration: " + duration;
     }
 
 }

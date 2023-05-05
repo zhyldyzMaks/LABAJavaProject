@@ -1,6 +1,7 @@
 package com.solvdLaba.airport;
 
-import com.solvdLaba.utils.MyLogger;
+import com.solvdLaba.exceptions.InvalidAgeException;
+import com.solvdLaba.exceptions.NoSeatAvailable;
 
 import java.util.Random;
 
@@ -52,12 +53,12 @@ public class Ticket {
         System.out.println("Ticket Cost: " + ticketCost);
     }
 
-    public static Ticket bookTicket(Flight flight, Passenger passenger, String preferredClass) throws DiscountCalculationException {
+    public static Ticket bookTicket(Flight flight, Passenger passenger, String preferredClass) throws NoSeatAvailable {
         String seatNumber = String.valueOf(flight.getAvailableSeats(preferredClass));
         double ticketCost = calculateTicketCost(flight, passenger, preferredClass);
         String ticketNumber = generateTicketNumber(flight, passenger, seatNumber);
 
-//        MyLogger.warn("Checking availability for ticket");
+        //MyLogger.warn("Checking availability for ticket");
         if (flight.availableSeats > 0){
             flight.availableSeats--;
             return new Ticket(ticketNumber, flight, passenger, seatNumber, preferredClass, ticketCost);
@@ -66,7 +67,7 @@ public class Ticket {
             throw new NoSeatAvailable("Seats are gone");
         }
     }
-    private static double calculateTicketCost(Flight flight, Passenger passenger, String preferredClass) throws DiscountCalculationException {
+    private static double calculateTicketCost(Flight flight, Passenger passenger, String preferredClass){
 //        MyLogger.warn("Calculating ticket cost:" + flight);
         Random random = new Random();
 
@@ -75,20 +76,15 @@ public class Ticket {
             originalCost = originalCost * 1.8;
         }
         double discount = getDiscount(passenger);
-        if(discount < 0 || discount > 1) {
-            throw new TicketCalculationException("Invalid discount value");
-        }
+
         double discountedPrice = originalCost * (1 - discount);
 
-        if(discountedPrice <= 0) {
-            throw new TicketCalculationException("Discounted price cannot be zero or negative");
-        }
         return discountedPrice;
     }
 
-    private static double getDiscount(Passenger passenger) throws DiscountCalculationException {
+    private static double getDiscount(Passenger passenger) throws InvalidAgeException {
         if (passenger.getAge() < 0) {
-            throw new DiscountCalculationException("Invalid age: " + passenger.getAge());
+            throw new InvalidAgeException("Invalid age: " + passenger.getAge(), new IllegalArgumentException());
         }
         if (passenger.getAge() < 12) {
             return 0.2;
@@ -105,8 +101,6 @@ public class Ticket {
         return ticketNumber;
     }
 
-
-    // AgeRestrictionExc (throw)
     @Override
     public boolean equals(Object ticket){
         if (this.toString() == ticket.toString()){
