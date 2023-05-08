@@ -2,6 +2,7 @@ package com.solvdLaba.airport;
 
 import com.solvdLaba.exceptions.InvalidAgeException;
 import com.solvdLaba.exceptions.NoSeatAvailable;
+import com.solvdLaba.utils.MyLogger;
 
 import java.util.Random;
 
@@ -23,27 +24,7 @@ public class Ticket {
         this.ticketCost = ticketCost;
     }
 
-    public String getNumber() {
-        return ticketNumber;
-    }
 
-    public Flight getFlight() {
-        return flight;
-    }
-    public Passenger getPassenger() {
-        return passenger;
-    }
-    public String getSeatNumber() {
-        return seatNumber;
-    }
-
-    public String getTicketClass() {
-        return ticketClass;
-    }
-
-    public double getTicketCost() {
-        return ticketCost;
-    }
     public void ticketDetails() {
         System.out.println("Ticket Number: " + ticketNumber);
         System.out.println("Passenger Name: " + passenger.getName());
@@ -53,21 +34,20 @@ public class Ticket {
         System.out.println("Ticket Cost: " + ticketCost);
     }
 
-    public static Ticket bookTicket(Flight flight, Passenger passenger, String preferredClass) throws NoSeatAvailable {
+    public static Ticket bookTicket(Flight flight, Passenger passenger, String preferredClass) throws NoSeatAvailable, InvalidAgeException {
         String seatNumber = String.valueOf(flight.getAvailableSeats(preferredClass));
         double ticketCost = calculateTicketCost(flight, passenger, preferredClass);
         String ticketNumber = generateTicketNumber(flight, passenger, seatNumber);
-
-        //MyLogger.warn("Checking availability for ticket");
+        MyLogger.warn("Checking availability for ticket");
         if (flight.availableSeats > 0){
             flight.availableSeats--;
             return new Ticket(ticketNumber, flight, passenger, seatNumber, preferredClass, ticketCost);
         }else{
             System.out.println("No available seats");
-            throw new NoSeatAvailable("Seats are gone");
+            throw new NoSeatAvailable("Seats are gone", flight);
         }
     }
-    private static double calculateTicketCost(Flight flight, Passenger passenger, String preferredClass){
+    private static double calculateTicketCost(Flight flight, Passenger passenger, String preferredClass) throws InvalidAgeException {
 //        MyLogger.warn("Calculating ticket cost:" + flight);
         Random random = new Random();
 
@@ -84,7 +64,7 @@ public class Ticket {
 
     private static double getDiscount(Passenger passenger) throws InvalidAgeException {
         if (passenger.getAge() < 0) {
-            throw new InvalidAgeException("Invalid age: " + passenger.getAge(), new IllegalArgumentException());
+            throw new InvalidAgeException("Invalid age: " + passenger.getAge(), passenger.getAge());
         }
         if (passenger.getAge() < 12) {
             return 0.2;
@@ -113,6 +93,28 @@ public class Ticket {
     @Override
     public String toString(){
         return this.ticketNumber;
+    }
+
+    public String getNumber() {
+        return ticketNumber;
+    }
+
+    public Flight getFlight() {
+        return flight;
+    }
+    public Passenger getPassenger() {
+        return passenger;
+    }
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public String getTicketClass() {
+        return ticketClass;
+    }
+
+    public double getTicketCost() {
+        return ticketCost;
     }
 
 

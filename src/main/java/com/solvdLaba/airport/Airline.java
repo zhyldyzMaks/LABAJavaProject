@@ -1,16 +1,24 @@
 package com.solvdLaba.airport;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface Airline {
+public class Airline {
 
-    void addFlight(Flight flight);
+   private String airlineName;
+   private List<Flight> flights;
 
-    void removeFlight(Flight flight);
-
-    List<Flight> getAllFlights();
-
-    String getName();
-
-    void setName(String name);
+   public Airline(String name){
+       airlineName = name;
+       this.flights = new ArrayList<>();
+   }
+    public String getName() {
+        return airlineName;
+    }
+    public List<Flight> getFlights() {
+        return flights;
+    }
+    public void addFlight(Flight flight) {
+        flights.add(flight);
+    }
 }

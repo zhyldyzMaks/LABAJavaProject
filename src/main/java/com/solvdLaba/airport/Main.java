@@ -14,8 +14,9 @@ import java.util.List;
 public class Main {
 
 
-    public static void main(String[] args) throws ParseException, InvalidBoardingPassException {
+    public static void main(String[] args) throws ParseException, InvalidBoardingPassException, NoSeatAvailable, InvalidAgeException {
         List<Passenger> allPassengers = new LinkedList<>();
+        Airline american = new Airline("American");
 
         DomesticAirport dAirport1 = new DomesticAirport("O'Hare", "Chicago");
         DomesticAirport dAirport2 = new DomesticAirport("Kennedy","NY");
@@ -28,8 +29,10 @@ public class Main {
 
 
         Flight ordLA = new Flight("2664", dAirport1, dAirport2, 2, dNow, "2 hours");
-        Ticket myTicket = Ticket.bookTicket(ordLA, james, "regular");
+        american.addFlight(ordLA);
+        ordLA.addPassenger(james);
 
+        Ticket myTicket = Ticket.bookTicket(ordLA, james, "regular");
         myTicket.ticketDetails();
         System.out.println();
         System.out.println(ordLA);
@@ -39,9 +42,11 @@ public class Main {
         Passenger alex = new Passenger("Alex",41);
         Luggage alexLug=new Luggage(10,"carry on");
         alex.setLuggage(alexLug);
+        ordLA.addPassenger(alex);
+
+        ordLA.setFlightState(FlightState.GATE_OPEN);
 
         Ticket t2 = Ticket.bookTicket(ordLA, alex, "business");
-
         t2.ticketDetails();
         System.out.println("==============="+alex.getName()+" flight info ================");
         System.out.println(ordLA);
@@ -50,42 +55,31 @@ public class Main {
         try {
             Ticket thirdTicket =  Ticket.bookTicket(ordLA, james, "business");
         }catch (NoSeatAvailable e){
-            System.out.println("Search for other flights");
+            System.out.println("Search for new flight");
+            System.out.println("Departure: " + e.getDepartureAirport().airportName);
+            System.out.println("Arrival: " + e.getArrivalAirport().airportName);
+            System.out.println("Date of flight: " + e.getDate());
         }
 
-        try{james.setAge(-1);
-        }catch(InvalidAgeException ex){
-            System.out.println("Age cannot be negative. Enter valid age number. " +ex.getMessage());
-        }
 
         allPassengers.add(james);
         allPassengers.add(alex);
 
         Boarding boarding = new Boarding();
+        boarding.checkIn(james);
+        boarding.checkIn(alex);
         boarding.openGate();
-        boarding.boardPassengers(allPassengers);
-        Boarding boardingPass = new Boarding();
-        james.setBoardingPass(boardingPass);
-        System.out.println(james.getBoardingPass());
 
+        boarding.boardPassengers(allPassengers);
 
         for (Passenger passenger : allPassengers) {
-            System.out.println(passenger.isTSAChecked());
-            passenger.getBoardingPass();
             passenger.setBoardingPass(boarding);
             passenger.setTSAChecked(true);
-            passenger.isTSAChecked();
+            System.out.println(passenger.isTSAChecked());
             passenger.skipSecurityCheckLine(true);
 
         }
-
-
-
-
-
-
-
-
+        System.out.println(ordLA.getPassengers());
 
     }
 }
