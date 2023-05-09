@@ -1,6 +1,8 @@
 package com.solvdLaba.airport;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Flight {
     private String flightNumber;
@@ -8,8 +10,61 @@ public class Flight {
     private Airport arrivalAirport;
     private int numberOfSeats;
     protected int availableSeats;
-    Airplane airplane;
     private Date date;
+    private String duration;
+    Airplane airplane;
+    private List<Passenger> passengers = new ArrayList<>();
+    private FlightState flightState;
+
+    public Flight(String flightNumber, Airport departureAirport, Airport arrivalAirport, int numberOfSeats, Date date, String duration) {
+        this.flightNumber = flightNumber;
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.numberOfSeats = numberOfSeats;
+        this.availableSeats = numberOfSeats;
+        this.date = date;
+        this.duration = duration;
+    }
+    public void addPassenger(Passenger passenger){
+        passengers.add(passenger);
+    }
+    @Override
+    public String toString(){
+        return "Flight Information\nFlight number: "+flightNumber+"\nDeparture from: "+getDepartureAirport()
+                + "\nArrive to : "+getArrivalAirport() +"\nNumber of seats "+ numberOfSeats+" seats"
+                +"\nAvailable seats are : "+availableSeats + " \nDate: " + date + "\nDuration: " + duration;
+    }
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    public Airport getDepartureAirport() {
+        return departureAirport;
+    }
+
+    public Airport getArrivalAirport() {
+        return arrivalAirport;
+    }
+
+    public int getAvailableSeats(String preferredClass) {
+        return availableSeats;
+    }
+
+    public Date getDate() {return date;}
+
+    public int getAvailableSeats() {return availableSeats;}
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public String getDuration() {return duration;}
+
+    public Airplane getAirplane() {return airplane;}
+
+    public List<Passenger> getPassengers() {
+        return passengers;
+    }
 
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
@@ -31,10 +86,6 @@ public class Flight {
         this.availableSeats = availableSeats;
     }
 
-    public void setAirplane(Airplane airplane) {
-        this.airplane = airplane;
-    }
-
     public void setDate(Date date) {
         this.date = date;
     }
@@ -43,59 +94,13 @@ public class Flight {
         this.duration = duration;
     }
 
-    public int getAvailableSeats() {
-        return availableSeats;
+    public void setAirplane(Airplane airplane) {
+        this.airplane = airplane;
     }
 
-    public Airplane getAirplane() {
-        return airplane;
+    public void setFlightState(FlightState flightState) {
     }
-
-    public Date getDate() {
-        return date;
+    public FlightState getFlightState() {
+        return flightState;
     }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    private String duration;
-
-    public Flight(String flightNumber, Airport departureAirport, Airport arrivalAirport, int numberOfSeats, Date date, String duration) {
-        this.flightNumber = flightNumber;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.numberOfSeats = numberOfSeats;
-        this.availableSeats = numberOfSeats;
-        this.date = date;
-        this.duration = duration;
-    }
-    public String getFlightNumber() {
-        return flightNumber;
-    }
-
-    public Airport getDepartureAirport() {
-        return departureAirport;
-    }
-
-    public Airport getArrivalAirport() {
-        return arrivalAirport;
-    }
-
-    public int getNumberOfSeats() {
-        return numberOfSeats;
-    }
-
-    public int getAvailableSeats(String preferredClass) {
-        return availableSeats;
-    }
-
-
-    @Override
-    public String toString(){
-        return "Flight Information\nFlight number: "+flightNumber+"\nDeparture from: "+getDepartureAirport()
-                + "\nArrive to : "+getArrivalAirport() +"\nNumber of seats "+ numberOfSeats+" seats"
-                +"\nAvailable seats are : "+availableSeats + " \nDate: " + date + "\nDuration: " + duration;
-    }
-
 }

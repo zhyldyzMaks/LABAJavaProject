@@ -5,7 +5,7 @@ import com.solvdLaba.utils.MyLogger;
 final public class DomesticAirport extends Airport{
     public DomesticAirport(String name, String location) {
         super(name, location);
-        //MyLogger.info("Airport getting created: " + name);
+        MyLogger.info("Airport getting created: " + name);
     }
     static{
         System.out.println("Running Static Block");

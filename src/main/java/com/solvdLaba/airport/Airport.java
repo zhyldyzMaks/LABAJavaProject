@@ -1,6 +1,6 @@
 package com.solvdLaba.airport;
 
-abstract class Airport {
+public abstract class Airport {
     protected String airportName;
     protected String airportLocation;
 

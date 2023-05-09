@@ -4,13 +4,28 @@ import com.solvdLaba.exceptions.InvalidBoardingPassException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Boarding implements BoardingGate{
     private boolean gateOpen;
     private static List<Passenger> passengersOnBoard;
+    private int boardingNumber;
+
+    public int getBoardingNumber() {
+        return boardingNumber;
+    }
+
+    public void checkIn(Passenger passenger){
+        passenger.setBoardingPass(this);
+    }
+
+    public void setBoardingNumber(int boardingNumber) {
+        this.boardingNumber = boardingNumber;
+    }
 
     public Boarding() {
         gateOpen = false;
+        boardingNumber = new Random().nextInt(10000);
         passengersOnBoard = new ArrayList<Passenger>();
     }
 
@@ -23,9 +38,6 @@ public class Boarding implements BoardingGate{
         System.out.println("Boarding gate is now closed.");
     }
 
-    public boolean isGateOpen() {
-        return gateOpen;
-    }
     public void boardPassengers(List<Passenger> passengers) throws InvalidBoardingPassException {
         if (!this.gateOpen) {
             System.out.println("Boarding gate is closed. Cannot board passengers.");
@@ -44,11 +56,6 @@ public class Boarding implements BoardingGate{
     }
     public List<Passenger> getPassengersOnBoard() {
         return passengersOnBoard;
-    }
-
-
-    public String getName(Passenger name) {
-        return getName(name);
     }
 
     public String toString(){
