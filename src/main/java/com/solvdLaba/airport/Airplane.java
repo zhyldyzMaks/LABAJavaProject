@@ -1,5 +1,7 @@
 package com.solvdLaba.airport;
 
+import java.util.Objects;
+
 public class Airplane {
     private String type;
     private int model;
@@ -13,6 +15,17 @@ public class Airplane {
         capacity = cp;
         pilot = plt;
     }
+    public String toString()
+    {
+        return "Airplane Information\nAircraft: "+getType()+" "+getModel()+"\nCapacity: "+getCapacity()
+                +" seats"+"\nPilot: "+pilot;
+    }
+    public int hashCode() {
+        int result = 31;
+        result = 31 * result + Objects.hashCode(type);
+        return result;
+    }
+
 
     public  String getType()
     {
@@ -34,9 +47,4 @@ public class Airplane {
         pilot = pilotName;
     }
 
-    public String toString()
-    {
-        return "Airplane Information\nAircraft: "+getType()+" "+getModel()+"\nCapacity: "+getCapacity()
-                +" seats"+"\nPilot: "+pilot;
-    }
 }

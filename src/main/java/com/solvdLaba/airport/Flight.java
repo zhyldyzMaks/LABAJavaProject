@@ -1,5 +1,6 @@
 package com.solvdLaba.airport;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,11 +13,15 @@ public class Flight {
     protected int availableSeats;
     private Date date;
     private String duration;
-    Airplane airplane;
+    private Airplane airplane;
+    private Terminal depTerminal;
+    private Terminal arrTerminal;
     private List<Passenger> passengers = new ArrayList<>();
     private FlightState flightState;
 
-    public Flight(String flightNumber, Airport departureAirport, Airport arrivalAirport, int numberOfSeats, Date date, String duration) {
+
+    public Flight(String flightNumber, Airport departureAirport, Airport arrivalAirport, int numberOfSeats, Date date,
+                  String duration, Terminal depTerminal, Terminal arrTerminal) {
         this.flightNumber = flightNumber;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
@@ -24,6 +29,8 @@ public class Flight {
         this.availableSeats = numberOfSeats;
         this.date = date;
         this.duration = duration;
+        this.depTerminal = depTerminal;
+        this.arrTerminal = arrTerminal;
     }
     public void addPassenger(Passenger passenger){
         passengers.add(passenger);
@@ -32,7 +39,8 @@ public class Flight {
     public String toString(){
         return "Flight Information\nFlight number: "+flightNumber+"\nDeparture from: "+getDepartureAirport()
                 + "\nArrive to : "+getArrivalAirport() +"\nNumber of seats "+ numberOfSeats+" seats"
-                +"\nAvailable seats are : "+availableSeats + " \nDate: " + date + "\nDuration: " + duration;
+                +"\nAvailable seats are : "+availableSeats + "\nDate: " + date + "\nDuration: " + duration
+                +"\nDeparture Terminal is: "+getDepTerminal().getName() + "\nArrival Terminal: " +getArrTerminal().getName();
     }
     public String getFlightNumber() {
         return flightNumber;
@@ -41,28 +49,46 @@ public class Flight {
     public Airport getDepartureAirport() {
         return departureAirport;
     }
-
     public Airport getArrivalAirport() {
         return arrivalAirport;
     }
-
     public int getAvailableSeats(String preferredClass) {
         return availableSeats;
     }
+    public Date getDate() {
+        return date;}
 
-    public Date getDate() {return date;}
-
-    public int getAvailableSeats() {return availableSeats;}
+    public int getAvailableSeats() {
+        return availableSeats;}
 
     public int getNumberOfSeats() {
         return numberOfSeats;
     }
 
-    public String getDuration() {return duration;}
+    public String getDuration() {
+        return duration;}
 
-    public Airplane getAirplane() {return airplane;}
+    public Airplane getAirplane() {
+        return airplane;}
+
+    public Terminal getDepTerminal() {
+        return depTerminal;
+    }
+
+    public void setDepTerminal(Terminal depTerminal) {
+        this.depTerminal = depTerminal;
+    }
+
+    public Terminal getArrTerminal() {
+        return arrTerminal;
+    }
+
+    public void setArrTerminal(Terminal arrTerminal) {
+        this.arrTerminal = arrTerminal;
+    }
 
     public List<Passenger> getPassengers() {
+        System.out.println(getPassengers().toString());
         return passengers;
     }
 
@@ -98,9 +124,9 @@ public class Flight {
         this.airplane = airplane;
     }
 
-    public void setFlightState(FlightState flightState) {
+
+    public void setFlightState(FlightState state) {
+        flightState = state;
     }
-    public FlightState getFlightState() {
-        return flightState;
-    }
+
 }

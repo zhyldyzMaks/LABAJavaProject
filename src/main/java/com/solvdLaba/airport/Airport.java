@@ -1,13 +1,16 @@
 package com.solvdLaba.airport;
 
+import java.util.List;
+
 public abstract class Airport {
-    protected String airportName;
-    protected String airportLocation;
+    protected String name;
+    protected String location;
 
     public Airport(String name, String location) {
-        airportName = name;
-        airportLocation = location;
+        this.name = name;
+        this.location = location;
     }
-
     public abstract void displayDetails();
+
+
 }

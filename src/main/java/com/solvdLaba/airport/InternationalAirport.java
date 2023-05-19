@@ -6,11 +6,16 @@ final public class InternationalAirport extends Airport{
     }
 
     public void displayDetails() {
-        System.out.println("International Airport - Name: " + airportName + ", Location: " + airportLocation);
+        System.out.println("International Airport - Name: " + name + ", Location: " + location);
     }
 
     @Override
     public String toString(){
-        return this.airportName;
+        return this.name;
     }
+    public final void announceDeparture() {
+        System.out.println("International flight departing from " + name + " airport.");
+    }
+
+
 }

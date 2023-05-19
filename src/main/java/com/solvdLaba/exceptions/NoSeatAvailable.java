@@ -18,6 +18,9 @@ public final class NoSeatAvailable extends Exception {
         arrivalAirport = flight.getArrivalAirport();
         date = flight.getDate();
     }
+    public void printStackTrace() {
+        super.printStackTrace();
+    }
 
     public Airport getDepartureAirport() {
         return departureAirport;
@@ -42,4 +45,5 @@ public final class NoSeatAvailable extends Exception {
     public void setDate(Date date) {
         this.date = date;
     }
+
 }

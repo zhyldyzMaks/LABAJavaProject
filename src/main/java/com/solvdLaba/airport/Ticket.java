@@ -48,7 +48,7 @@ public class Ticket {
         }
     }
     private static double calculateTicketCost(Flight flight, Passenger passenger, String preferredClass) throws InvalidAgeException {
-//        MyLogger.warn("Calculating ticket cost:" + flight);
+        MyLogger.warn("Calculating ticket cost:" + flight);
         Random random = new Random();
 
         double originalCost = random.nextDouble(150, 500);
@@ -116,7 +116,6 @@ public class Ticket {
     public double getTicketCost() {
         return ticketCost;
     }
-
 
 
 
