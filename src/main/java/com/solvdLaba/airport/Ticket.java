@@ -4,9 +4,14 @@ import com.solvdLaba.exceptions.InvalidAgeException;
 import com.solvdLaba.exceptions.NoSeatAvailable;
 import com.solvdLaba.utils.MyLogger;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-public class Ticket {
+public class Ticket implements Iterable<Ticket>{
     private String ticketNumber;
     private Flight flight;
     private Passenger passenger;
@@ -24,7 +29,6 @@ public class Ticket {
         this.ticketCost = ticketCost;
     }
 
-
     public void ticketDetails() {
         System.out.println("Ticket Number: " + ticketNumber);
         System.out.println("Passenger Name: " + passenger.getName());
@@ -32,6 +36,13 @@ public class Ticket {
         System.out.println("Seat Number: " + seatNumber);
         System.out.println("Ticket Class: " + ticketClass);
         System.out.println("Ticket Cost: " + ticketCost);
+    }
+    public Iterator<Ticket> iterator() {
+        List<Ticket> tickets = new ArrayList<>();
+        return tickets.iterator();
+    }
+    public Stream<Ticket> stream() {
+        return Stream.of(this);
     }
 
     public static Ticket bookTicket(Flight flight, Passenger passenger, String preferredClass) throws NoSeatAvailable, InvalidAgeException {
@@ -62,7 +73,7 @@ public class Ticket {
         return discountedPrice;
     }
 
-    private static double getDiscount(Passenger passenger) throws InvalidAgeException {
+    static double getDiscount(Passenger passenger) throws InvalidAgeException {
         if (passenger.getAge() < 0) {
             throw new InvalidAgeException("Invalid age: " + passenger.getAge(), passenger.getAge());
         }

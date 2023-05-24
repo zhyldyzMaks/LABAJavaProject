@@ -4,6 +4,7 @@ package com.solvdLaba.airport;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Flight {
     private String flightNumber;
@@ -127,6 +128,31 @@ public class Flight {
 
     public void setFlightState(FlightState state) {
         flightState = state;
+    }
+    public Stream<Passenger> getPassengerStream() {
+        return passengers.stream();
+    }
+    public void printPassengerNames() {
+        passengers.stream()
+                .map(Passenger::getName)
+                .forEach(System.out::println);
+    }
+    public long countAdultPassengers() {
+        return passengers.stream()
+                .filter(p -> p.getAge() >= 18)
+                .count();
+    }
+    public Stream<Passenger> getPassengersWithLuggage() {
+        return passengers.stream()
+                .filter(p -> p.getLuggage() != null);
+    }
+    public boolean hasPassenger(String passengerName) {
+        return passengers.stream()
+                .anyMatch(p -> p.getName().equals(passengerName));
+    }
+    public boolean allPassengersCheckedIn() {
+        return passengers.stream()
+                .allMatch(Passenger::isTSAChecked);
     }
 
 }

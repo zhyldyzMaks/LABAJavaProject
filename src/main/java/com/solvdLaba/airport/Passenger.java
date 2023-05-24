@@ -3,6 +3,9 @@ package com.solvdLaba.airport;
 import com.solvdLaba.exceptions.InvalidAgeException;
 import com.solvdLaba.utils.MyLogger;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 public class Passenger implements Security{
     private String name;
     private int age;
@@ -44,6 +47,12 @@ public class Passenger implements Security{
         if (age < 0){
             throw new InvalidAgeException("Age cannot be less than zero", age);
         }
+    }
+    public void checkLuggage(Consumer<Luggage> luggageConsumer) {
+        luggageConsumer.accept(luggage);
+    }
+    public boolean isAdultPassenger(Predicate<Passenger> agePredicate) {
+        return agePredicate.test(this);
     }
     public Boarding getBoardingPass() {
         return boardingPass;

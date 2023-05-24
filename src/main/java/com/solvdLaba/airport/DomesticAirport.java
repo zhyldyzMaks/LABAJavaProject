@@ -5,6 +5,8 @@ import com.solvdLaba.utils.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 final public class DomesticAirport extends Airport{
     private List<Gate> gates = new ArrayList<>();
@@ -15,9 +17,12 @@ final public class DomesticAirport extends Airport{
     static{
         System.out.println("Running Static Block");
     }
+    public void addGate(Gate gate) {
+        gates.add(gate);
+    }
     public void closeAllGates() {
         for (Gate gate : gates) {
-            gate.setStatus(GateStatus.GATE_CLOSE);
+            gate.setStatus(GateStatus.CLOSED);
         }
     }
     public boolean equals(Object obj) {
@@ -39,5 +44,21 @@ final public class DomesticAirport extends Airport{
     public String toString(){
         return this.name;
     }
-
+    public List<String> getGateNumbers(Function<Gate, String> gateNumberMapper) {
+        List<String> gateNumbers = new ArrayList<>();
+        for (Gate gate : gates) {
+            String gateNumber = gateNumberMapper.apply(gate);
+            gateNumbers.add(gateNumber);
+        }
+        return gateNumbers;
+    }
+    public List<Gate> getGatesMatching(Predicate<Gate> gatePredicate) {
+        List<Gate> matchingGates = new ArrayList<>();
+        for (Gate gate : gates) {
+            if (gatePredicate.test(gate)) {
+                matchingGates.add(gate);
+            }
+        }
+        return matchingGates;
+    }
 }
