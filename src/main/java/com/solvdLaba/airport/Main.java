@@ -1,18 +1,19 @@
 package com.solvdLaba.airport;
 
-import com.solvdLaba.exceptions.FlightNotFoundException;
-import com.solvdLaba.exceptions.InvalidAgeException;
-import com.solvdLaba.exceptions.NoSeatAvailable;
-import com.solvdLaba.exceptions.NoSuchTerminalException;
-
+import com.solvdLaba.airport.entities.*;
+import com.solvdLaba.airport.entities.Boarding;
+import com.solvdLaba.airport.services.*;
+import com.solvdLaba.customExceptions.FlightNotFoundException;
+import com.solvdLaba.customExceptions.InvalidAgeException;
+import com.solvdLaba.customExceptions.NoSeatAvailable;
+import com.solvdLaba.customExceptions.NoSuchTerminalException;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.solvdLaba.airport.Gate.generateGateNumber;
+import static com.solvdLaba.airport.services.GateService.generateGateNumber;
 
 public class Main {
 
@@ -66,8 +67,9 @@ public class Main {
         }
 
         Ticket ticket1 = null;
+
         try {
-            ticket1 = Ticket.bookTicket(ordLA, james, "Regular");
+            ticket1 = TicketService.bookTicket(ordLA, james, "Regular");
         } catch (NoSeatAvailable e) {
             System.out.println("Search for new flight");
             System.out.println("Departure: " + e.getDepartureAirport().name);
@@ -92,7 +94,7 @@ public class Main {
 
         Ticket ticket2 = null;
         try {
-            ticket2 = Ticket.bookTicket(ordLA, alex, "Business");
+            ticket2 = TicketService.bookTicket(ordLA, alex, "Business");
         } catch (NoSeatAvailable e) {
             System.out.println("Search for new flight");
             System.out.println("Departure: " + e.getDepartureAirport().name);
@@ -109,7 +111,7 @@ public class Main {
         System.out.println(ticket1.equals(ticket2));
 
         try {
-            Ticket thirdTicket =  Ticket.bookTicket(ordLA, james, "Business");
+            Ticket thirdTicket =  TicketService.bookTicket(ordLA, james, "Business");
         }catch (NoSeatAvailable e){
             System.out.println("Search for new flight");
             System.out.println("Departure: " + e.getDepartureAirport().name);
@@ -121,16 +123,16 @@ public class Main {
             e.printStackTrace();
         }
 
-
         allPassengers.add(james);
         allPassengers.add(alex);
 
-        Boarding boarding = new Boarding();
-        boarding.checkIn(james);
-        boarding.checkIn(alex);
-        boarding.openGate();
-        boarding.boardPassengers(allPassengers);
+        BoardingService boardingService = new BoardingService();
+        com.solvdLaba.airport.entities.Boarding boarding = new Boarding();
 
+        boardingService.checkIn(james);
+        boardingService.checkIn(alex);
+        boardingService.openGate();
+        boardingService.boardPassengers(allPassengers);
 
         allPassengers.forEach(passenger -> {
             passenger.setBoardingPass(boarding);
@@ -153,15 +155,15 @@ public class Main {
 
         System.out.println(overweightLuggage);
 
-        List<Gate> allDomesticGates = new ArrayList<>();
+        List<GateService> allDomesticGates = new ArrayList<>();
 
         String gateNumber = generateGateNumber();
         String gateNumber2 = generateGateNumber();
         String gateNumber3 = generateGateNumber();
 
-        Gate gate1 = new Gate(domesticAirport1, gateNumber, GateStatus.OPEN);
-        Gate gate2 = new Gate(domesticAirport1,gateNumber2, GateStatus.BOARDING);
-        Gate gate3 = new Gate(domesticAirport1,gateNumber3,GateStatus.CLOSED);
+        GateService gate1 = new GateService(domesticAirport1, gateNumber, GateStatus.OPEN);
+        GateService gate2 = new GateService(domesticAirport1,gateNumber2, GateStatus.BOARDING);
+        GateService gate3 = new GateService(domesticAirport1,gateNumber3,GateStatus.CLOSED);
         domesticAirport1.addGate(gate1);
         domesticAirport1.addGate(gate2);
         domesticAirport1.addGate(gate3);
@@ -178,7 +180,7 @@ public class Main {
         List<String> gateNumbers = domesticAirport1.getGateNumbers(g -> g.getGateNumber());
         System.out.println("Gate Numbers: " + gateNumbers);
 
-        List<Gate> closedGates = domesticAirport1.getGatesMatching(g -> g.getStatus() == GateStatus.CLOSED);
+        List<GateService> closedGates = domesticAirport1.getGatesMatching(g -> g.getStatus() == GateStatus.CLOSED);
         System.out.println("Closed Gates: " + closedGates);
 
         domesticAirport1.closeAllGates();
@@ -210,20 +212,22 @@ public class Main {
                 .forEach(passenger -> System.out.println(passenger.getName()));
         System.out.println("________________________________________________");
 
-        Stream<Passenger> passengerStream = ordLA.getPassengerStream();
-        ordLA.printPassengerNames();
+        FlightService flightService = new FlightService();
 
-        long adultPassengerCount = ordLA.countAdultPassengers();
+        Stream<Passenger> passengerStream = flightService.getPassengerStream(ordLA);
+        flightService.printPassengerNames(ordLA);
+
+        long adultPassengerCount = flightService.countAdultPassengers(ordLA);
         System.out.println("Number of adult passengers: " + adultPassengerCount);
 
-        Stream<Passenger> passengersWithLuggageStream = ordLA.getPassengersWithLuggage();
+        Stream<Passenger> passengersWithLuggageStream = flightService.getPassengersWithLuggage(ordLA);
         passengersWithLuggageStream.forEach(passenger -> System.out.println(passenger.getName() + " - " + passenger.getLuggage()));
 
         String passengerName = "Alex Doe";
-        boolean hasPassenger = ordLA.hasPassenger(passengerName);
+        boolean hasPassenger = flightService.hasPassenger(ordLA, passengerName);
         System.out.println("Has passenger " + passengerName + ": " + hasPassenger);
 
-        boolean allPassengersCheckedIn = ordLA.allPassengersCheckedIn();
+        boolean allPassengersCheckedIn = flightService.allPassengersCheckedIn(ordLA);
         System.out.println("All passengers checked in: " + allPassengersCheckedIn);
 
         Runnable runnable = new FlightThread(ordLA);
@@ -232,6 +236,5 @@ public class Main {
 
         Thread passengerThread = new PassengerThread(james);
         passengerThread.start();
-
     }
 }
