@@ -1,7 +1,7 @@
-package com.solvdLaba.airport;
+package com.solvdLaba.airport.services;
 
 public interface Security {
-    boolean isTSAPreChecked = false;
 
+    boolean isTSAPreChecked = false;
     void skipSecurityCheckLine(boolean isTSAPreChecked);
 }

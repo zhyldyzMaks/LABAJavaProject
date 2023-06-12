@@ -1,6 +1,9 @@
-package com.solvdLaba.airport;
+package com.solvdLaba.airport.entities;
+
+import com.solvdLaba.airport.services.LuggageFilter;
 
 public class Luggage {
+
     private int weight;
     private String type;
 
@@ -8,6 +11,11 @@ public class Luggage {
         this.weight = weight;
         this.type = type;
     }
+
+    public static LuggageFilter isOverweightFilter() {
+        return luggage -> luggage.getWeight() >= 20;
+    }
+
     public int getWeight() {
         return weight;
     }
@@ -24,9 +32,7 @@ public class Luggage {
         this.type = type;
     }
 
-
-    public String toString(){
-        return "Baggage Details: \n Weight: "+weight+" kg"+"\n Type: "+type;
+    public String toString() {
+        return "Baggage Details: \n Weight: " + weight + " kg" + "\n Type: " + type;
     }
-
 }

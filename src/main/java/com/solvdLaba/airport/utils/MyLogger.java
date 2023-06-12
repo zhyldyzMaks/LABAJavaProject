@@ -1,4 +1,4 @@
-package com.solvdLaba.utils;
+package com.solvdLaba.airport.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +17,4 @@ public class MyLogger {
     public static void error(String message){
         logger.error(message);
     }
-
 }
-
